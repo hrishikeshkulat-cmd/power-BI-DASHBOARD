@@ -3,6 +3,8 @@ SELECT
     *
 FROM
     pizza_sales;
+    
+##key performance indicator part (kpi)->
 #1) Total Revenue:
 SELECT 
     SUM(total_price) AS Total_Revenue
@@ -34,6 +36,9 @@ SELECT
 FROM
     pizza_sales;
 
+#kpi part end.<-
+
+#chart requirement starts.->
 
 # 6)Daily Trend for Total Orders
 SELECT 
@@ -53,26 +58,26 @@ FROM
 GROUP BY MONTHNAME(order_date);
 
 #8) percentage of Sales by Pizza Category
+
 SELECT
   pizza_category,
-  ROUND(SUM(total_price), 2)AS total_revenue,
+  ROUND(SUM(total_price), 2) AS total_revenue,
   ROUND(
-    SUM(total_price) * 100
-    / SUM(SUM(total_price)) OVER (), 2
+    SUM(total_price) * 100 / (SELECT SUM(total_price) FROM pizza_sales), 2
   ) AS percentage
 FROM
   pizza_sales
 GROUP BY
   pizza_category
-order by total_revenue desc;
+ORDER BY
+  total_revenue DESC;
 
 #9) percentage of Sales by Pizza Size
-SELECT
+  SELECT
   pizza_size,
   ROUND(SUM(total_price), 2) AS total_revenue,
   ROUND(
-    SUM(total_price) * 100
-    / SUM(SUM(total_price)) OVER (), 2
+    SUM(total_price) * 100 / (SELECT SUM(total_price) FROM pizza_sales), 2
   ) AS percentage
 FROM
   pizza_sales
@@ -145,6 +150,7 @@ FROM
 GROUP BY pizza_name
 ORDER BY Total_Orders ASC
 LIMIT 5;
+
 
 
 
